@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="978.0" prefWidth="1392.0" snapToPixel="false" style="-fx-background-color: #5E4936;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.machinist.machinist.MainSceneController">
+    <children>
+        <TabPane prefHeight="590.0" prefWidth="845.0" style="-fx-background-color: #5E4936;" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Main Menu">
+                    <content>
+                        <AnchorPane prefHeight="771.0" prefWidth="1459.0">
+                            <children>
+                                <TextField fx:id="start_date" alignment="CENTER" layoutX="551.0" layoutY="320.0" onKeyReleased="#StartDateInput" prefHeight="25.0" prefWidth="179.0" promptText="Enter Start Date: mm/dd/yyyy" />
+                                <TextField fx:id="end_date" alignment="CENTER" layoutX="551.0" layoutY="373.0" onKeyReleased="#EndDateInput" prefHeight="25.0" prefWidth="179.0" promptText="Enter End Date: mm/dd/yyyy" />
+                                <ImageView cache="true" cacheHint="QUALITY" depthTest="ENABLE" fitHeight="191.0" fitWidth="160.0" layoutX="510.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" x="50.0" y="50.0">
+                                    <image>
+                                        <Image url="@logo.png" />
+                                    </image>
+                                </ImageView>
+                                <Label layoutX="443.0" layoutY="22.0" prefHeight="37.0" prefWidth="394.0" text="FIREBALL MACHINIST REPORT" textAlignment="CENTER" textFill="#a5a5a5" underline="true">
+                                    <font>
+                                        <Font name="Agency FB" size="42.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="generate_button" layoutX="578.0" layoutY="470.0" mnemonicParsing="false" onAction="#btnGenerate" prefHeight="25.0" prefWidth="125.0" text="Generate Report" />
+                                <Button fx:id="last_week_button" layoutX="578.0" layoutY="523.0" mnemonicParsing="false" onAction="#btnLastWeek" prefHeight="25.0" prefWidth="125.0" text="Last Week Report" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Employee Report">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="table" editable="true" layoutX="7.0" layoutY="63.0" prefHeight="564.0" prefWidth="1375.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName" prefWidth="121.60000610351562" text="employeeName" />
+                                        <TableColumn fx:id="ticketDate" minWidth="0.0" prefWidth="92.00003051757812" text="ticketDate" />
+                                        <TableColumn fx:id="partNumber" prefWidth="177.5999755859375" text="partNumber" />
+                                        <TableColumn fx:id="hoursWorked" prefWidth="116.0" text="hoursWorked" />
+                                        <TableColumn fx:id="piecesGood" prefWidth="106.4000244140625" text="piecesGood" />
+                                        <TableColumn fx:id="piecesScrapped" prefWidth="115.199951171875" text="piecesScrapped" />
+                                        <TableColumn fx:id="piecesTotal" prefWidth="121.60003662109375" text="piecesTotal" />
+                                        <TableColumn fx:id="estimatedPieces" prefWidth="125.5999755859375" text="estimatedPieces" />
+                                        <TableColumn fx:id="efficiency" prefWidth="99.199951171875" text="efficiency" />
+                                        <TableColumn fx:id="comments" prefWidth="172.7999267578125" text="comments" />
+                                        <TableColumn fx:id="estCycleTime" prefWidth="132.0" text="estCycleTime" />
+                                    </columns>
+                                </TableView>
+                                <TableView fx:id="bottomTable" layoutX="55.0" layoutY="656.0" prefHeight="71.0" prefWidth="1279.0">
+                                    <columns>
+                                        <TableColumn fx:id="totalPiecesColumn" prefWidth="468.79997634887695" text="Total Good" />
+                                        <TableColumn fx:id="totalScrappedColumn" minWidth="0.0" prefWidth="400.79998779296875" text="Total Scrapped" />
+                                        <TableColumn fx:id="averageEfficiencyColumn" minWidth="0.0" prefWidth="408.8000366210938" text="Overall Efficiency" />
+                                    </columns>
+                                </TableView>
+                                <ChoiceBox fx:id="filter" layoutX="488.0" layoutY="20.0" prefWidth="150.0" />
+                                <Button fx:id="removeRowButton" layoutX="696.0" layoutY="20.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="145.0" text="Remove Row" />
+                            </children></AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Second Report">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="table2" editable="true" layoutX="8.0" layoutY="117.0" prefHeight="564.0" prefWidth="1375.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName2" prefWidth="121.60000610351562" text="employeeName" />
+                                        <TableColumn fx:id="ticketDate2" minWidth="0.0" prefWidth="92.00003051757812" text="ticketDate" />
+                                        <TableColumn fx:id="partNumber2" prefWidth="177.5999755859375" text="partNumber" />
+                                        <TableColumn fx:id="hoursWorked2" prefWidth="116.0" text="hoursWorked" />
+                                        <TableColumn fx:id="piecesGood2" prefWidth="106.4000244140625" text="piecesGood" />
+                                        <TableColumn fx:id="piecesScrapped2" prefWidth="115.199951171875" text="piecesScrapped" />
+                                        <TableColumn fx:id="piecesTotal2" prefWidth="121.60003662109375" text="piecesTotal" />
+                                        <TableColumn fx:id="estimatedPieces2" prefWidth="125.5999755859375" text="estimatedPieces" />
+                                        <TableColumn fx:id="efficiency2" prefWidth="99.199951171875" text="efficiency" />
+                                        <TableColumn fx:id="comments2" prefWidth="172.7999267578125" text="comments" />
+                                        <TableColumn fx:id="estCycleTime2" prefWidth="132.0" text="estCycleTime" />
+                                    </columns>
+                                </TableView>
+                                <TableView fx:id="bottomTable2" layoutX="56.0" layoutY="818.0" prefHeight="71.0" prefWidth="1279.0">
+                                    <columns>
+                                        <TableColumn fx:id="totalPiecesColumn2" prefWidth="468.79997634887695" text="Total Good" />
+                                        <TableColumn fx:id="totalScrappedColumn2" minWidth="0.0" prefWidth="400.79998779296875" text="Total Scrapped" />
+                                        <TableColumn fx:id="averageEfficiencyColumn2" minWidth="0.0" prefWidth="408.8000366210938" text="Overall Efficiency" />
+                                    </columns>
+                                </TableView>
+                                <ChoiceBox fx:id="filter2" layoutX="545.0" layoutY="46.0" prefWidth="150.0" />
+                                <Button fx:id="removeRowButton2" layoutX="769.0" layoutY="45.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="145.0" text="Remove Row" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Comparison Chart">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="compareTopTable" layoutX="39.0" layoutY="103.0" prefHeight="293.0" prefWidth="1338.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName3" prefWidth="273.5999984741211" text="Employee Name" />
+                                        <TableColumn fx:id="piecesGood3" minWidth="0.0" prefWidth="300.8000183105469" text="Total Good" />
+                                        <TableColumn fx:id="totalScrapped3" prefWidth="317.60009765625" text="Total Scrapped" />
+                                        <TableColumn fx:id="averageEfficiency3" prefWidth="449.5999755859375" text="Average Efficiency" />
+                                    </columns>
+                                </TableView>
+                                <TableView fx:id="compareBottomTable" layoutX="39.0" layoutY="553.0" prefHeight="293.0" prefWidth="1338.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName4" prefWidth="273.5999984741211" text="Employee Name" />
+                                        <TableColumn fx:id="piecesGood4" minWidth="0.0" prefWidth="300.8000183105469" text="Total Good" />
+                                        <TableColumn fx:id="totalScrapped4" prefWidth="317.60009765625" text="Total Scrapped" />
+                                        <TableColumn fx:id="averageEfficiency4" prefWidth="449.5999755859375" text="Average Efficiency" />
+                                    </columns>
+                                </TableView>
+                                <HBox alignment="CENTER" layoutX="179.0" layoutY="43.0" prefHeight="43.0" prefWidth="1058.0" style="-fx-background-color: #08081c;">
+                                    <children>
+                                        <Label fx:id="Label1" alignment="CENTER" prefHeight="43.0" prefWidth="1058.0" text="Label" textAlignment="CENTER" textFill="WHITE">
+                                            <font>
+                                                <Font name="Bell MT" size="38.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" layoutX="179.0" layoutY="483.0" prefHeight="43.0" prefWidth="1058.0" style="-fx-background-color: #08081c;">
+                                    <children>
+                                        <Label fx:id="Label2" alignment="CENTER" prefHeight="43.0" prefWidth="1058.0" text="Label" textAlignment="CENTER" textFill="WHITE">
+                                            <font>
+                                                <Font name="Bell MT" size="38.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</StackPane>
