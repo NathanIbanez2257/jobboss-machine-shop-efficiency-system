@@ -1,5 +1,4 @@
-package com.machinist.machinist;
-
+package com.example.machinistapp;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -13,17 +12,13 @@ public class AggregateData {
         this.totalScrapped = new SimpleDoubleProperty(totalScrapped);
         this.averageEfficiency = new SimpleDoubleProperty(averageEfficiency);
     }
-
     public DoubleProperty totalPiecesProperty() {
         return totalPieces;
     }
-
     public DoubleProperty totalScrappedProperty() {
         return totalScrapped;
     }
-
     public DoubleProperty averageEfficiencyProperty() {
         return averageEfficiency;
     }
 }
-

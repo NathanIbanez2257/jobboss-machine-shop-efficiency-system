@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.machinistapp.MainSceneController">
+   <center>
+        <TabPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1050.0" prefWidth="2100.0" scaleShape="false" style="-fx-background-color: #5E4936;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab text="Main Menu">
+               <content>
+                  <VBox alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                     <children>
+                                <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="82.0" prefWidth="657.0" text="FIREBALL MACHINIST REPORT" textAlignment="CENTER" textFill="#a5a5a5" underline="true">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                           <VBox.margin>
+                              <Insets top="-150.0" />
+                           </VBox.margin>
+                                </Label>
+                                <ImageView cache="true" cacheHint="QUALITY" depthTest="ENABLE" fitHeight="229.0" fitWidth="242.0" pickOnBounds="true" preserveRatio="true" x="50.0" y="50.0">
+                                    <image>
+                                        <Image url="@test2.png" />
+                                    </image>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                                </ImageView>
+                                <TextField fx:id="start_date" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" onKeyReleased="#StartDateInput" prefHeight="30.0" prefWidth="300.0" promptText="Enter Start Date: mm/dd/yyyy">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="40.0" />
+                           </VBox.margin>
+                        </TextField>
+                                <TextField fx:id="end_date" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" onKeyReleased="#EndDateInput" prefHeight="30.0" prefWidth="300.0" promptText="Enter End Date: mm/dd/yyyy">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                                <Button fx:id="generate_button" mnemonicParsing="false" onAction="#btnGenerate" prefHeight="42.0" prefWidth="211.0" text="Generate Report">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="150.0" right="150.0" top="60.0" />
+                           </VBox.margin>
+                        </Button>
+                                <Button fx:id="last_week_button" mnemonicParsing="false" onAction="#btnLastWeek" prefHeight="42.0" prefWidth="210.0" text="Last Week Report">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding>
+                  </VBox>
+               </content>
+                </Tab>
+                <Tab text="Employee Report">
+               <content>
+                  <VBox alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="2000.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="500.0">
+                           <children>
+                                      <Button fx:id="removeRowButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Remove Row">
+                                 <HBox.margin>
+                                    <Insets right="40.0" />
+                                 </HBox.margin></Button>
+                                      <ChoiceBox fx:id="filter" prefHeight="25.0" prefWidth="145.0" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="-10.0" />
+                           </VBox.margin>
+                        </HBox>
+                                <TableView fx:id="table" editable="true" prefHeight="650.0" prefWidth="1850.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="employeeName" />
+                                        <TableColumn fx:id="ticketDate" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="ticketDate" />
+                                        <TableColumn fx:id="partNumber" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="partNumber" />
+                                        <TableColumn fx:id="hoursWorked" minWidth="120.0" prefWidth="109.7142333984375" text="hoursWorked" />
+                                        <TableColumn fx:id="piecesGood" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="piecesGood" />
+                                        <TableColumn fx:id="piecesScrapped" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="piecesScrapped" />
+                                        <TableColumn fx:id="piecesTotal" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="piecesTotal" />
+                                        <TableColumn fx:id="estimatedPieces" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="estimatedPieces" />
+                                        <TableColumn fx:id="efficiency" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="efficiency" />
+                                        <TableColumn fx:id="comments" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="comments" />
+                                        <TableColumn fx:id="estCycleTime" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="estCycleTime" />
+                                    </columns>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                                </TableView>
+                                <TableView fx:id="bottomTable" prefHeight="70.0" prefWidth="1600.0">
+                                    <columns>
+                                        <TableColumn fx:id="totalPiecesColumn" maxWidth="550.0" minWidth="550.0" prefWidth="550.0" text="Total Good" />
+                                        <TableColumn fx:id="totalScrappedColumn" maxWidth="550.0" minWidth="550.0" prefWidth="550.0" text="Total Scrapped" />
+                                        <TableColumn fx:id="averageEfficiencyColumn" maxWidth="460.0" minWidth="460.0" prefWidth="460.0" text="Overall Efficiency" />
+                                    </columns>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                                </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding>
+                  </VBox>
+               </content>
+                </Tab>
+                <Tab text="Second Report">
+               <content>
+                  <VBox alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="500.0">
+                           <children>
+                                      <Button fx:id="removeRowButton2" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Remove Row">
+                                 <HBox.margin>
+                                    <Insets right="40.0" />
+                                 </HBox.margin>
+                              </Button>
+                                      <ChoiceBox fx:id="filter2" prefHeight="25.0" prefWidth="145.0" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="-10.0" />
+                           </VBox.margin></HBox>
+                                <TableView fx:id="table2" editable="true" prefHeight="650.0" prefWidth="1850.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName2" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="employeeName" />
+                                        <TableColumn fx:id="ticketDate2" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="ticketDate" />
+                                        <TableColumn fx:id="partNumber2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="partNumber" />
+                                        <TableColumn fx:id="hoursWorked2" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="hoursWorked" />
+                                        <TableColumn fx:id="piecesGood2" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="piecesGood" />
+                                        <TableColumn fx:id="piecesScrapped2" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="piecesScrapped" />
+                                        <TableColumn fx:id="piecesTotal2" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="piecesTotal" />
+                                        <TableColumn fx:id="estimatedPieces2" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="estimatedPieces" />
+                                        <TableColumn fx:id="efficiency2" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="efficiency" />
+                                        <TableColumn fx:id="comments2" maxWidth="270.0" minWidth="240.0" prefWidth="240.0" text="comments" />
+                                        <TableColumn fx:id="estCycleTime2" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="estCycleTime" />
+                                    </columns>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                                </TableView>
+                                <TableView fx:id="bottomTable2" prefHeight="70.0" prefWidth="1600.0">
+                                    <columns>
+                                        <TableColumn fx:id="totalPiecesColumn2" maxWidth="550.0" minWidth="550.0" prefWidth="550.0" text="Total Good" />
+                                        <TableColumn fx:id="totalScrappedColumn2" maxWidth="550.0" minWidth="550.0" prefWidth="550.0" text="Total Scrapped" />
+                                        <TableColumn fx:id="averageEfficiencyColumn2" maxWidth="460.0" minWidth="460.0" prefWidth="460.0" text="Overall Efficiency" />
+                                    </columns>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                                </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding>
+                  </VBox>
+               </content>
+                </Tab>
+                <Tab text="Comparison Chart">
+               <content>
+                  <VBox alignment="CENTER" fillWidth="false" spacing="20.0">
+                     <children>
+                                <HBox alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="950.0" style="-fx-background-color: #08081c;">
+                                    <children>
+                                        <Label fx:id="Label1" alignment="CENTER" prefHeight="45.0" prefWidth="1050.0" text="Label" textAlignment="CENTER" textFill="WHITE">
+                                            <font>
+                                                <Font name="Bell MT" size="38.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                                </HBox>
+                                <TableView fx:id="compareTopTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="1300.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName3" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Employee Name" />
+                                        <TableColumn fx:id="piecesGood3" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Total Good" />
+                                        <TableColumn fx:id="totalScrapped3" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Total Scrapped" />
+                              <TableColumn fx:id="totalHours" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Total Hours" />
+                                        <TableColumn fx:id="averageEfficiency3" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" text="Average Efficiency" />
+                                    </columns>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                                </TableView>
+                        <TableView fx:id="jobDataTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="205.0" prefWidth="1500.0">
+                           <columns>
+                              <TableColumn fx:id="jobNumber_D" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Job Number " />
+                              <TableColumn fx:id="partNumber_D" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Part Number" />
+                              <TableColumn fx:id="piecesGood_D" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Pieces Good" />
+                              <TableColumn fx:id="piecesScrapped_D" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Pieces Scrapped" />
+                              <TableColumn fx:id="totalEstimatedHours_D" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Total Estimated Hours" />
+                              <TableColumn fx:id="totalActualHours_D" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Total Actual Hours" />
+                              <TableColumn fx:id="orderQuantity_D" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Order Quantity " />
+                              <TableColumn fx:id="workCenter_D" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" text="Work Center" />
+                              <TableColumn fx:id="status_D" maxWidth="185.0" minWidth="185.0" prefWidth="185.0" text="Status" />
+                           </columns>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </TableView>
+                                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="950.0" style="-fx-background-color: #08081c;">
+                           <children>
+                                        <Label fx:id="Label2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="1050.0" text="Label" textAlignment="CENTER" textFill="WHITE">
+                                            <font>
+                                                <Font name="Bell MT" size="38.0" />
+                                            </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                        </Label>
+                           </children>
+                                </HBox>
+                                <TableView fx:id="compareBottomTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="1300.0">
+                                    <columns>
+                                        <TableColumn fx:id="employeeName4" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Employee Name" />
+                                        <TableColumn fx:id="piecesGood4" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Total Good" />
+                                        <TableColumn fx:id="totalScrapped4" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Total Scrapped" />
+                              <TableColumn fx:id="totalHours2" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" text="Total Hours" />
+                                        <TableColumn fx:id="averageEfficiency4" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" text="Average Efficiency" />
+                                    </columns>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                                </TableView>
+                        <TableView fx:id="jobDataTable2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="205.0" prefWidth="1500.0">
+                           <columns>
+                              <TableColumn fx:id="jobNumber_D2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Job Number " />
+                              <TableColumn fx:id="partNumber_D2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Part Number" />
+                              <TableColumn fx:id="piecesGood_D2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Pieces Good" />
+                              <TableColumn fx:id="piecesScrapped_D2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Pieces Scrapped" />
+                              <TableColumn fx:id="totalEstimatedHours_D2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Total Estimated Hours" />
+                              <TableColumn fx:id="totalActualHours_D2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Total Actual Hours" />
+                              <TableColumn fx:id="orderQuantity_D2" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Order Quantity " />
+                              <TableColumn fx:id="workCenter_D2" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" text="Work Center" />
+                              <TableColumn fx:id="status_D2" maxWidth="185.0" minWidth="185.0" prefWidth="185.0" text="Status" />
+                           </columns>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding>
+                  </VBox>
+               </content>
+                </Tab>
+            <Tab text="Schedule">
+               <content>
+                  <VBox alignment="CENTER" fillWidth="false" spacing="20.0">
+                     <children>
+                        <Button fx:id="undo" mnemonicParsing="false" onAction="#undo_button" prefHeight="40.0" prefWidth="180.0" text="UNDO">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="-25.0" />
+                           </VBox.margin>
+                        </Button>
+                        <HBox alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="1050.0" style="-fx-background-color: #08081c;">
+                           <children>
+                              <Label fx:id="Label3" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="1050.0" text=" " textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="Bell MT" size="38.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <TableView fx:id="nextWeekTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="675.0" prefWidth="1800.0">
+                           <columns>
+                              <TableColumn fx:id="machines" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" sortable="false" text="Machine" />
+                              <TableColumn fx:id="monday" editable="false" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" sortable="false" text="Monday" />
+                              <TableColumn fx:id="tuesday" editable="false" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" sortable="false" text="Tuesday" />
+                              <TableColumn fx:id="wednesday" editable="false" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" sortable="false" text="Wednesday" />
+                              <TableColumn fx:id="thursday" editable="false" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" sortable="false" text="Thursday" />
+                              <TableColumn fx:id="friday" editable="false" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" sortable="false" text="Friday" />
+                           </columns>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TableView>
+                        <ListView fx:id="extra" maxHeight="-Infinity" maxWidth="-Infinity" orientation="HORIZONTAL" prefHeight="115.0" prefWidth="1522.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></ListView>
+                     </children>
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            </tabs>
+        </TabPane>
+   </center>
+</BorderPane>

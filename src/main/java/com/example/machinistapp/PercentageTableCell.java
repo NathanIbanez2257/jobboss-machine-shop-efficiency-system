@@ -1,5 +1,4 @@
-package com.machinist.machinist;
-
+package com.example.machinistapp;
 import javafx.scene.control.TableCell;
 
 public class PercentageTableCell<T> extends TableCell<T, Double> {
