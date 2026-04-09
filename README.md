@@ -139,6 +139,67 @@ This preserves the live JobBOSS generation workflow to be tested without comprom
 
 ---
 
+## Tech Stack
+
+- Java 17
+- JavaFX 17
+- Maven
+- org.json
+
+---
+
+## Installation & Run
+
+### Prerequisites
+
+- Java 17 installed  
+  - [Eclipse Adoptium (Temurin)](https://adoptium.net/temurin/releases/?version=17)  
+  - [Amazon Corretto 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)  
+  - [Oracle JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)  
+- Git installed (to clone the repository)
+- Maven installed *(optional — Maven wrapper is included)*
+
+---
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/NathanIbanez2257/jobboss-machine-shop-efficiency-system.git
+cd jobboss-machine-shop-efficiency-system
+```
+
+---
+
+### Run with Maven
+
+```bash
+mvn clean javafx:run
+```
+
+---
+
+### Run with Maven Wrapper (no Maven installation required)
+
+**Windows:**
+```bash
+mvnw.cmd clean javafx:run
+```
+
+**Mac/Linux:**
+```bash
+./mvnw clean javafx:run
+```
+
+---
+
+### Notes
+
+- The application launches with a **preloaded demo dataset** so the full UI can be explored immediately.
+- Live JobBOSS API generation remains available for real data usage.
+- No manual JavaFX SDK setup is required; dependencies are managed through Maven.
+
+---
+
 ## Screenshot Documentation
 
 ## 1. Main Menu
