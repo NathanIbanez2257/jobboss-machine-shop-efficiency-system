@@ -1,10 +1,13 @@
 # JobBOSS Machine Shop Efficiency System
 
-JavaFX-based machine shop efficiency reporting system built on the JobBOSS API to calculate machinist performance and bonus metrics.
+JavaFX-based machine shop efficiency reporting system built on JobBOSS API to generate machinist 
+performance reports, compare aligned reporting periods, and 
+preview next-week machine scheduling in a single desktop application.
 
-This application is the Java implementation of a machine shop weekly report that began as a Python prototype. 
-It was built to pull machine shop production data from JobBOSS, transform it into an editable reporting format, compare reporting periods, 
-and use it as a tool to determine bonuses/performance from the machinists.
+This repository contains the finalized Java implementation of the project. What began as a reporting concept 
+and prototype evolved into a multi-tab JavaFX system that supports live API-backed report generation, editable 
+report review, comparison analytics, job-level production tracking, predictive scheduling, and a preloaded demo 
+dataset so the full UI can be reviewed.
 
 ---
 
@@ -13,82 +16,153 @@ and use it as a tool to determine bonuses/performance from the machinists.
 **Strong Hand Tools | Santa Fe Springs, CA**  
 **Programmer Analyst | June 2023 – January 2025**
 
-The development followed two major phases:
+The project was built around a real reporting need inside a machine shop workflow: production data 
+existed in JobBOSS, but it was not presented in a way that made weekly efficiency review, 
+prior-period comparisons, easy to perform.
 
-1. **Python prototype**
-   - validated API access patterns
-   - tested the reporting workflow
-   - proved the bonus/efficiency calculation model
+The development moved through two stages:
 
-2. **Java production implementation**
-   - restructured the reporting logic into a maintainable application
-   - added a JavaFX user interface for a cleaner UI appearance 
-   - supported in-app editing, filtering, comparison views, and richer UI workflows
+1. **Reporting prototype and workflow validation**
+   - confirmed that the required production data could be pulled from JobBOSS
+   - verified how time-ticket, routing, and order-routing information had to be combined
+   - established the efficiency/expected-output calculations
+
+2. **JavaFX production application**
+   - converted the reporting process into a desktop application with a dedicated user interface
+   - added editable tables, employee filtering, summary tables, comparison tables, and scheduling views
+   - expanded the application from a single report screen into an interactive and editable tool 
+
+The finalized application is designed to answer several practical questions in one place:
+
+- What did machinists produce during a selected reporting window?
+- What should the expected output have been based on cycle times and hours worked?
+- How does this period compare to the prior aligned period?
+- Which jobs are completed, still in progress, or still scheduled?
+- What does the next week’s machine schedule look like based on current work center activity?
 
 ---
 
 ## Core Features
 
-## 1. Date-Based Report Generation
-![MainMenu](images/templates/main_menu.png)
+### 1. Date-Based Report Generation
+The application supports two primary ways to generate production reports:
 
-The main menu provides two reporting entry points:
+- **Manual date range generation** - start and end date input fields
+- **Last week quick generation** - a dedicated button that automatically selects the prior full Monday–Friday work week
 
-### Manual date range generation
-Users can enter:
-- start date
-- end date
+Once the primary report is generated, the application automatically computes a prior-period comparison range based on the same date span and weekday alignment. This makes the second report a true comparative period rather than a manually guessed date window.
 
-The app then generates a report for that selected window. The secondary report will take into account the first time frame and provide an equal
-day range prior to the first report.
+### 2. JobBOSS API Integration
+The reporting engine is driven by JobBOSS REST API calls. The final report is not retrieved from a single endpoint; instead, the application builds it through a multi-step data pipeline:
 
-### Last week quick report
-The application also includes a convenience action to automatically generate a report for the last full Monday–Friday work week.
-This supports the expected use case of checking the prior week's performance as the default choice.
+1. authenticate into JobBOSS
+2. request time-ticket detail records for the selected employees and date range
+3. extract job numbers from time-ticket activity
+4. request part numbers from order routings
+5. request operator codes and cycle times from routings
+6. derive estimated pieces from hours worked and cycle time
+7. derive efficiency and total pieces fields for final display
+
+The application separates these calls into dedicated data-processing classes so the UI can access normalized table-ready data instead of unfiltered raw JSON.
+
+### 3. Dual-Period Reporting
+The system does not stop at one report window. It automatically generates:
+
+- the selected primary report period
+- a second aligned prior-period report
+
+That second report feeds both the **Second Report** tab and the **Comparison Chart** tab. 
+This makes the application useful not only for single-period review, but also for performance comparison.
+
+### 4. Editable Employee Reporting Workspace
+The **Employee Report** and **Second Report** tabs act as editable review tables rather than static exports. 
+Users can modify key fields directly inside the JavaFX tables and immediately see the effect on the report.
+
+Editable workflow support includes:
+
+- hours worked edits
+- pieces good edits
+- pieces scrapped edits
+- comments edits
+- row removal for invalid or irrelevant entries
+- employee filtering through a choice box
+- automatic recalculation of totals and efficiency summaries
+
+### 5. Aggregate Summary Calculations
+Each report tab includes a bottom summary table that recalculates:
+
+- total good pieces
+- total scrapped pieces
+- overall efficiency
+
+This makes the screen useful for both row-level review and quick interpretation of the data.
+
+### 6. Comparison Analytics
+The **Comparison Chart** tab transforms row-level reporting data into employee-level summaries for both reporting windows. It aggregates:
+
+- total good pieces
+- total scrapped pieces
+- total hours
+- average efficiency
+
+Each period is shown in its own comparison table, and a summary row is appended so both detailed employee performance and total period performance can be reviewed together.
+
+### 7. Job Stage Status
+The same comparison screen includes two job-detail tables that show the production jobs associated with each reporting window. These tables surface information such as:
+
+- job number
+- part number
+- good/scrapped pieces
+- total estimated hours
+- total actual hours
+- order quantity
+- work center
+- status
+
+This lets the application bridge employee performance reporting and actual job completion visibility.
+
+### 8. Predictive Next-Week Scheduling
+The **Schedule** tab extends the project beyond reporting and into planning. It uses current order-routing data to build a work-center-based next-week view with columns for Monday through Friday and rows for machines/work centers.
+
+The scheduling view includes:
+
+- work center assignment logic
+- machine/day schedule table
+- overflow jobs collected into an extra items list
+- drag-and-drop placement into available schedule cells
+- undo support for schedule changes
+
+### 9. Demo Data 
+The finalized repo includes a built-in sanitized demo dataset. On application startup, the controller loads fake report data, fake job detail data, and a fake next-week schedule so the app is immediately populated for review, screenshots, and UI testing.
+
+This preserves the live JobBOSS generation workflow to be tested without compromising sensitive information.
 
 ---
 
-## 2. JobBOSS API Integration
+## Screenshot Documentation
 
-The application uses the JobBOSS REST API as the source for shop-floor production activity.
+## 1. Main Menu
+![Main Menu](images/main_menu.png)
 
-### Data retrieval workflow
-The reporting engine follows a multi-step data pipeline:
+The **Main Menu** is the reporting entry point for the application. It presents:
 
-1. authenticate API user (JobBOSS)
-2. request time ticket details for each machinist across the selected date range
-3. extract job numbers from time ticket records
-4. request part numbers from order routings using those job numbers
-5. request operator codes and cycle times using the part numbers
-6. combine those results into a final normalized reporting dataset
+- start date input
+- end date input
+- **Generate Report** for manual date windows
+- **Last Week Report** for automatic prior full-week generation
 
-### Why this mattered
-The production data needed for efficiency reporting was not available in a single endpoint. Many of the data required (cycle times, pieces completed) 
-had to be called through different API calls, so separating each extraction into steps was essential to create the report tables.
+This screen establishes the report window that drives the rest of the application. 
+It is intentionally simple because it acts as the command center for the main reporting workflow.
 
 ---
 
-## 3. Dual-Period Reporting
-![FirstReport](images/progress/employee_report/v2.png)
+## 2. Employee Report – Primary Reporting Period
+![Employee Report 1](images/employee_report_1.png)
 
-One of the major features of this application is the comparison to the prior time frame performance.
+The **Employee Report** tab displays row-level production activity for the primary report window. Each row represents a production entry tied to an employee, part, and ticket date, with calculated performance values layered onto that record.
 
-After the primary report is generated, the application calculates a second, prior comparison period based on the same duration and weekday alignment.
-That second report is used for the comparison tab later in the UI.
+Visible report data includes:
 
-### Why this is useful
-Instead of looking at a single reporting period in isolation, users can compare machinists' output across two aligned date windows and identify performance changes over time.
-
----
-
-## 4. Employee Report Tab
-
-The **Employee Report** tab is the primary detailed reporting view.
-
-It displays row-level production data for the selected reporting period.
-
-### Columns shown in the report
-The report includes fields:
 - employee name
 - ticket date
 - part number
@@ -101,281 +175,422 @@ The report includes fields:
 - comments
 - estimated cycle time
 
-### What this tab is used for
-This tab acts as the main review and correction workspace for production data.
+The summary table at the bottom provides values for the currently displayed report rows.
 
-Users can inspect:
-- which part was worked on
-- how many good pieces were completed
-- scrap counts
-- expected output
-- resulting efficiency value
+Rows highlighted in *red* visually mark records whose output exceeded the estimated baseline, 
+which helps catch misreporting from employees: 
+- reporting 0 pieces 
+- reporting 0 hours 
+- reporting excessive pieces completed in short time span
 
----
-
-## 5. In-App Editing Features
-
-One of the strongest features in this application is that the report is not treated as static output.
-Several fields are editable directly inside the JavaFX table.
-
-### Editable fields
-Based on the current implementation, users can edit:
-- hours worked
-- pieces good
-- pieces scrapped
-- comments
-
-### Dynamic recalculation behavior
-When editable values are changed, the application automatically recalculates dependent metrics such as:
-- pieces total
-- estimated pieces
-- efficiency
-- hoursWorked 
-
-This turns the report into an interactive review tool rather than a one-time export.
-
-### Why this matters
-Real shop data often needs human adjustment.  
-This feature makes it possible to:
-- clean up edge cases
-- test corrected assumptions
-- immediately see the impact of changes on efficiency metrics
-
-This report system can also flag potential inconsistencies by marking data with abnormal efficiencies (>100%).
-This makes it easier to catch data that was misreported and has to be modified.
-
-![V3](images/progress/employee_report/v3.png)
+### Purpose
+This image captures the central purpose of the system: transforming JobBOSS production activity into an editable, 
+performance-aware report that can be reviewed by managers or analysts.
 
 ---
 
-## 6. Row Removal Workflow
+## 3. Employee Report – Review and Adjustment Workflow
+![Employee Report 2](images/employee_report_2.png)
 
-The Employee Report and Second Report tabs both support removing selected rows.
+The second employee report screenshot documents the tab in active use. 
+The table structure is the same, but the use case of the screen is clearer when used this way:
 
-### Why remove rows?
-This is useful when:
-- a row should not be part of the analysis
-- a ticket is invalid
-- a duplicate or irrelevant operation appears
-- the user wants to adjust the report to match business rules
+- users can filter the table by employee
+- selected rows can be removed
+- edited values recalculate dependent fields
+- the bottom summary updates based on the current table state
 
-The table updates after row removal, and summary values are recalculated accordingly.
-This feature is very important as it was a common occurrence that employees may accidentally report blank data that will show up during 
-table generation. This inevitable occurrence has to be corrected and easily dealt with to ensure clean data. 
-
----
-
-## 7. Filtering by Employee
-
-The Employee Report tabs support filtering by machinist name.
-
-### Workflow
-A choice box is populated with:
-- `View All`
-- unique employee names present in the report
-
-Selecting a specific employee filters the table to show only that machinist’s records.
-
-### Why this matters
-This makes the app useful for both:
-- full-shop reporting
-- individual machinist review
+### Purpose
+This is the difference between a static report and a production review tool. 
+The report can be corrected, narrowed down, and evaluated interactively instead of being 
+treated as a fixed export.
 
 ---
 
-## 8. Aggregate Summary Tables
+## 4. Second Report – Prior Aligned Reporting Period
+![Second Employee Report 1](images/second_employee_report_1.png)
 
-Each report tab includes a bottom summary table that aggregates key metrics for the currently displayed dataset.
+The **Second Report** tab mirrors the structure of the Employee Report tab, but it is populated with the automatically calculated prior-period comparison window.
 
-### Summary values
-The aggregate section calculates:
-- total good pieces
-- total scrapped pieces
-- overall average efficiency
+This screen makes it possible to inspect the comparison period at the same row-level style as the primary report.
 
-### Why it matters
-This gives users a quick performance summary without manually totaling the detailed report rows.
-This also provides a quick view of unique employee metrics.
+### Purpose
+The project does not compare only aggregated totals. It preserves the prior period as its own full editable report, 
+which means the user can edit the details of the prior period as it is a common occurrence accidental misreporting takes place.
 
 ---
 
-## 9. Comparison Chart Tab
-![ComparisonChart](images/progress/comparison_chart/v2.png)
+## 5. Second Report – Prior Period Editing and Cleanup
+![Second Employee Report 2](images/second_employee_report_2.png)
 
-The **Comparison Chart** tab is designed to compare employee-level performance across the two report periods.
+The second screenshot for this tab shows the same editing, filtering, and row-management workflow applied to the prior period.
 
-### Top tables
-- summarizes the first reporting period
-- includes job number completion progress based on the reporting period
+That keeps both report windows functionally equivalent:
 
-### Bottom tables
-- summarizes the second reporting period
-- includes job number completion progress based on the reporting period
+- each period can be reviewed independently
+- each period can be filtered by machinist
+- each period supports row removal and recalculation
+- each period feeds a downstream comparison summary
 
-### Per-employee metrics shown
-Each comparison table includes:
-- employee name
-- total good pieces
-- total scrapped pieces
-- average efficiency
-
-### Summary row
-- a summary row is also appended to the bottom of the comparison data to provide whole-table totals/averages.
-
-### Why this matters
-This feature turns the application from a simple report viewer into a period-over-period performance comparison tool. It also provides
-information on scheduled jobs that are still in progress or have been completed, to monitor for future parts to be assigned onto machines.
-
-It supports questions like:
-- who improved from one week to the next?
-- did average efficiency increase or decrease?
-- which employees had the most output vs the expected during each reporting window?
+### Purpose
+It reinforces that the comparison workflow is grounded in two full reports, not just two automatically generated totals.
 
 ---
 
-## 10. JavaFX UI Architecture
+## 6. Comparison Chart
+![Comparison Charts](images/comparison_charts.png)
 
-The application is structured around JavaFX and FXML.
+The **Comparison Chart** tab is where the application becomes a true analytical tool.
 
-### Main UI components
-- `HelloApplication.java` — launches the JavaFX application
-- `MainScene.fxml` — declares the UI layout
-- `MainSceneController.java` — handles UI behavior, events, filtering, editing, report generation, and comparisons
+The top half represents the primary report window and the bottom half represents the prior-period report window. Each section includes:
 
-### UI layout
-The current FXML layout includes:
+- a period label banner with date range
+- an employee comparison table summarizing total good, total scrap, total hours, and average efficiency
+- a job-detail table showing the jobs associated with that period
+
+### Purpose
+This tab connects employee performance and job progression in one screen. It allows a reviewer to compare 
+period-over-period output while also understanding which jobs were completed, scheduled, or still active within 
+each window.
+
+---
+
+## 7. Predictive Scheduling – Next Week Overview
+![Predictive Scheduling 1](images/predictive_scheduling_1.png)
+
+The **Schedule** tab displays the projected next-week machine schedule as a work-center-by-day table. Each row represents a machine or work center, and each column represents a day in the upcoming work week.
+
+The view includes:
+
+- machine/work center names in the leftmost column
+- job/part assignments by day
+- explicit `AVAILABLE` placeholders where no job is currently assigned
+- an overflow list of jobs at the bottom that did not fit into the first Monday–Friday pass
+- an **UNDO** button for schedule adjustments
+
+### Purpose
+This is the clearest expression of the project’s expansion from reporting into operations planning. 
+The application not only reports what happened; it also helps visualize what should happen next.
+
+---
+
+## 8. Predictive Scheduling – Interactive Placement Workflow
+![Predictive Scheduling 2](images/predictive_scheduling_2.png)
+
+The second schedule screenshot documents the same predictive scheduling concept as a working UI tool.
+
+The bottom overflow list is designed to feed drag-and-drop placement into available cells in the schedule table. This gives the screen two layers of value:
+
+- an automatically generated starting schedule
+- a manual adjustment workflow for refining next-week assignments
+- takes into account which part numbers are compatible with which machines, ensuring scheduling aligns with the true machine shop system
+
+### Purpose
+It shows that scheduling in this project is not just an output table, it is an interactive scheduling surface backed by the same underlying production data pipeline.
+
+---
+
+## Feature Explanations
+
+## 1. Main Application Flow
+The application launches through `HelloApplication.java`, which loads `MainScene.fxml`, creates the scene, and opens the desktop UI in full-screen mode. `Main.java` exists as a simple launcher wrapper that delegates to `HelloApplication`.
+
+The interface itself is organized into five tabs:
+
 - Main Menu
 - Employee Report
 - Second Report
 - Comparison Chart
 - Schedule
 
-### Design direction documented in repository images
-The `images/` folder also documents UI progression and additional tab concepts explored during development, including:
-- prior week views
-- comparison design iterations
-- next week scheduling / predictive scheduling 
-
-This repo includes screenshots of later added features; the most up-to-date project is not included.
-The latest project was saved and transferred to a different desktop, which I no longer have access to.
+All meaningful application behavior is coordinated inside `MainSceneController.java`.
 
 ---
 
-## 11. Data Model Classes
+## 2. Controller-Driven Orchestration
+`MainSceneController.java` is the operational center of the application.
 
-The project includes a small set of focused model/helper classes that support cleaner table rendering and calculations.
+It is responsible for:
 
-### `ReportRow`
-Represents a row in the detailed production report.
+- gathering date inputs from the Main Menu
+- generating the main report through the reporting engine
+- calculating the prior aligned report period
+- generating the second report automatically
+- loading job-detail data for both periods
+- configuring the employee report tables
+- configuring the comparison tables
+- configuring the schedule table
+- wiring editable cell behavior
+- updating summary tables
+- applying employee filters
+- removing rows from reports
+- supporting drag-and-drop schedule interaction
+- loading the startup demo dataset
 
-It stores:
-- identifying fields
-- work metrics
-- calculated fields
-- bound recalculation behavior
+### Primary controller workflows
 
-This class is for the editable report workflow.
+#### `btnGenerate()`
+Handles manual report generation from the selected date range. It:
 
-### `AggregateData`
-Represents summary metrics shown in the lower aggregate table.
+1. reads the start and end dates from the input fields
+2. calculates the second aligned comparison period
+3. runs the main report service
+4. loads the primary report table
+5. loads job-level details for the primary period
+6. runs the secondary report service
+7. loads the prior-period report table
+8. loads job-level details for the prior period
+9. updates the comparison labels and future schedule date labels
 
-### `EmployeeReport`
-Represents employee-level aggregated comparison data for the comparison tables.
+#### `btnLastWeek()`
+Generates the last full Monday–Friday report automatically. In addition to the normal report workflow, it also computes the next-week date window and triggers schedule generation.
 
-### `PercentageTableCell`
-Custom JavaFX table cell for rendering efficiency values as formatted percentages.
+#### `loadStaticDemoData()`
+Bootstraps the UI on startup with sanitized sample data. It populates:
 
----
+- the primary employee report
+- the prior-period employee report
+- the job-detail tables
+- the comparison tables
+- the next-week schedule
+- the date banners and schedule day labels
 
-## 12. Screenshot and UI Progress Documentation
-
-The repository includes an `images/` directory that documents both baseline templates and feature progression.
-
-### Template images
-The `images/templates/` folder shows the initialization layout for the application:
-- main menu
-- employee report
-- prior week
-- comparison view
-
-### Progress images
-The `images/progress/` folder documents iteration history for:
-- employee report
-- comparison chart
-- prior week
-- next week scheduling
-
----
-
-## 13. Next Week Scheduling / Predictive Scheduling
-
-The repository includes screenshots for a **next week scheduling** implementation under the project images.
-
-This concept was to take in the current scheduling, check for finished jobs, and from then on assign future jobs to each machine based on 
-expected pieces to be completed day by day.
-
-### Why it matters
-That application was being expanded from an employee metric view to a predictive scheduling system that knew which parts could be done
-or were assigned to each machine. This would then create an expected job completion timeline week by week.
+This is what makes the repository launch into a fully populated interface for demo purposes.
 
 ---
 
-## Known Bug / Edge Case: Cycle Time Overflow
+## 3. Reporting Engine Implementation
+The main reporting engine lives in `machinist.java`.
 
-One of the screenshots shows a bug where the **Pieces Finished** field displayed an abnormally large integer value:
+### What it does
+This class builds the employee reporting dataset from JobBOSS data. The process is multi-stage:
 
-![KnownBug](images/progress/next_week_schedule/bug_case.png)
+1. authenticate through the JobBOSS login endpoint
+2. generate all dates between the selected start and end date
+3. request time-ticket activity for the configured employee code list
+4. fall back between 8 AM and 7 AM timestamps when collecting time-ticket data
+5. extract job numbers from the resulting records
+6. request part numbers from order routings
+7. request operator code and cycle time data from routings
+8. calculate estimated pieces
+9. calculate efficiency
+10. calculate total pieces
+11. reorder and trim columns into final UI-ready report rows
+12. return the result as a `ReportResult`, which includes both the final row matrix and the list of job numbers used for downstream job-detail reporting
 
-### What this value indicates
-This is the maximum value of a signed 32-bit integer in Java
+### Why the implementation matters
+The report is assembled from separate endpoints because JobBOSS does not provide all of the required performance 
+fields in one api call. The value of the class is the transformation layer that converts raw operational data 
+into a report table that the UI can use directly.
 
-### Most likely cause
-Based on the calculation logic, this bug is most likely related to:
-- missing cycle time data
-- cycle time being `0`
+---
 
-### Why the bug is important
-It highlights the need for:
-- defensive validation of routing data
-- safeguards around missing cycle times
-- zero-value protection
+## 4. Row Model and Live Recalculation
+Each employee-report row is represented by `ReportRow.java`.
 
-### Why include this in the project
-- awareness of real-world production data quality problems
-- understanding of numeric edge cases
-- the kinds of issues that emerge when expected-output calculations depend on external operational data
+This model uses JavaFX properties and bindings to keep calculated fields live.
 
-I included this image as progress of the scheduling system I was implementing. As stated previously, this repo is not the most up-to-date version, so the fix can't be shown
-on this project. However, my approach to this bug was to check the part numbers associated with this overflow bug and check their cycle times. As the only possible scenarios for
-this overflow would have to be a divide by 0 or an infinitely small number. This was a bug that was not fixed in the project itself, but was used to make corrections on the 
-JobBoss system itself. Ensuring all part numbers have their correct associated cycle times guarantees no failure when making an API call for that information.
+### Bound/calculated values include:
+
+- `piecesTotal = piecesGood + piecesScrapped`
+- `estimatedPieces = floor(hoursWorked / estCycleTime)`
+- `efficiency = floor((piecesGood / estimatedPieces) * 1000) / 10`
+
+Because the table columns are backed by properties, edits made in the table automatically update the report state and refresh dependent calculations.
+
+### Supporting behavior
+- hours worked are rounded to the nearest tenth
+- calculated values update through property bindings rather than manual recomputation everywhere
+- table refreshes and aggregate summaries are triggered after edits
+
+---
+
+## 5. Employee Report and Prior-Period Report Tabs
+The two report tabs use the same table structure and controller logic.
+
+### Features implemented in these tabs
+- editable cells for hours worked, pieces good, pieces scrapped, and comments
+- employee filtering via a choice box populated from the report data
+- row removal with validation for no-row-selected cases
+- bottom summary table updates whenever data changes
+- comparison tables updated when edited values change
+- visual row highlighting through `CustomTableRow.java` when actual output exceeds estimated output
+
+### Aggregate logic
+`AggregateData.java` stores the bottom-table rollup values for:
+
+- total pieces
+- total scrapped
+- average efficiency
+
+The controller recalculates these values every time report rows change.
+
+---
+
+## 6. Comparison Chart Implementation
+The employee summary model is represented by `EmployeeReport.java`.
+
+This model aggregates row-level data into employee-level totals and averages.
+
+### Stored comparison metrics
+- employee name
+- total pieces good
+- total scrapped
+- average efficiency
+- total hours
+
+### Comparison processing flow
+`updateCompareTopTable(...)` in the controller iterates through report rows, groups them by employee, and builds `EmployeeReport` objects. `addSummaryRow(...)` then appends a final summary record for full-table review.
+
+`PercentageTableCell.java` is used so efficiency values in the comparison tables are rendered as percentage text.
+
+### Job status flow
+Below each comparison table, the controller populates a `TableView<JobNumberReport>` using data returned by `JobNumberData.java`.
+
+`JobNumberData.java`:
+
+- deduplicates the report’s job numbers
+- requests order-routing detail from JobBOSS
+- filters for MILL/LATHE operations
+- transforms JSON into job-level report rows
+- derives a simplified status column (`Finished` / `Not Finished` in the data layer, plus routed scheduling statuses visible in the demo dataset)
+
+`JobNumberReport.java` then exposes those values to the JavaFX table using typed properties.
+
+---
+
+## 7. Predictive Scheduling Implementation
+The next-week scheduling pipeline lives in `NextWeekData.java` and `NextWeekReport.java`.
+
+### `NextWeekData.java`
+This class builds the schedule source data by:
+
+1. requesting current order-routings from JobBOSS
+2. filtering for MILL/LATHE operations
+3. collecting job number, part number, and work center values
+4. calculating expected pieces from cycle time data
+5. calculating completed/finished counts from order-routing quantities
+6. assigning work to machine/work-center buckets using custom routing rules
+7. returning a `TreeMap<String, Set<String>>` keyed by machine/work center
+
+The scheduling rules explicitly distribute work across named work centers such as:
+
+- `#1` through `#7`
+- `BROTHER`
+- `TSUGAMI 1`
+- `TSUGAMI 2`
+
+### `setNextWeekData(...)`
+Inside the controller, the schedule map is transformed into the Monday–Friday table. The first five items for a machine are assigned to weekday columns. Any remaining items are collected into the bottom `extra` list.
+
+### Drag-and-drop scheduling
+The scheduling screen is interactive:
+
+- `drag()` and `day_drag(...)` attach drag-drop behavior to each weekday column
+- only cells marked `AVAILABLE` accept dropped items
+- dropped items are removed from the overflow list
+- the prior value is pushed onto an undo stack
+- `undo_button()` restores the last removed overflow entry and frees the schedule cell again
+
+### Why this matters
+The schedule tab combines generated scheduling suggestions and manual planning refinement in one view.
+
+---
+
+## 8. Demo Data for Repo
+`FakeReportData.java` is what makes the finalized repository self-contained for presentation and review.
+
+It provides:
+
+- current report dates
+- previous report dates
+- next-week schedule dates
+- current report row data
+- previous report row data
+- current and previous job-detail tables
+- a next-week schedule map
+
+This means the application can be opened and demonstrated immediately, even without live API retrieval. At the same time, the real JobBOSS-backed generation workflow remains in place for actual report creation.
 
 ---
 
 ## Project Structure
 
 ```text
-src/
-  main/
-    java/
-      com/machinist/machinist/
-        AggregateData.java
-        EmployeeReport.java
-        HelloApplication.java
-        HelloController.java
-        Main.java
-        MainSceneController.java
-        PercentageTableCell.java
-        ReportRow.java
-        machinist.java
-    resources/
-      com/machinist/machinist/
-        MainScene.fxml
-        hello-view.fxml
-        logo.png
+JobBOSS Machine Shop Efficiency System/
+├── .mvn/
+│   └── wrapper/
+├── images/
+│   ├── comparison_charts.png
+│   ├── employee_report_1.png
+│   ├── employee_report_2.png
+│   ├── main_menu.png
+│   ├── predictive_scheduling_1.png
+│   ├── predictive_scheduling_2.png
+│   ├── second_employee_report_1.png
+│   └── second_employee_report_2.png
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── README.md
+└── src/
+    └── main/
+        ├── java/
+        │   ├── module-info.java
+        │   └── com/example/machinistapp/
+        │       ├── AggregateData.java
+        │       ├── CustomTableRow.java
+        │       ├── EmployeeReport.java
+        │       ├── FakeReportData.java
+        │       ├── HelloApplication.java
+        │       ├── HelloController.java
+        │       ├── JobNumberData.java
+        │       ├── JobNumberReport.java
+        │       ├── Main.java
+        │       ├── MainSceneController.java
+        │       ├── NextWeekData.java
+        │       ├── NextWeekReport.java
+        │       ├── PercentageTableCell.java
+        │       ├── ReportResult.java
+        │       ├── ReportRow.java
+        │       └── machinist.java
+        └── resources/
+            ├── META-INF/
+            │   └── MANIFEST.MF
+            └── com/example/machinistapp/
+                ├── MainScene.fxml
+                ├── hello-view.fxml
+                └── logo.png
+```
 
-images/
-  templates/
-  progress/
+### Root-Level Files
+- **`pom.xml`** — Maven project configuration, dependencies, compiler settings, and JavaFX plugin setup.
+- **`mvnw` / `mvnw.cmd`** — Maven wrapper scripts for consistent project builds.
+- **`.mvn/wrapper/`** — Maven wrapper configuration files used by the wrapper scripts.
+- **`README.md`** — repository documentation for the finalized project.
+- **`images/`** — current screenshot documentation used in the README.
 
+### Java Source Files
+- **`HelloApplication.java`** — primary JavaFX application entry point that loads the main scene and starts the UI.
+- **`Main.java`** — simple launcher wrapper that delegates to the JavaFX application.
+- **`MainSceneController.java`** — central controller coordinating report generation, UI behavior, editing, filtering, aggregation, comparison, scheduling, drag-and-drop, and demo-data bootstrapping.
+- **`machinist.java`** — core report generation engine that calls JobBOSS endpoints and builds the main employee reporting dataset.
+- **`ReportResult.java`** — return wrapper for main report output and the extracted job number list.
+- **`ReportRow.java`** — row model for employee report tables with bound calculated fields.
+- **`AggregateData.java`** — bottom summary-table model for total pieces, total scrap, and overall efficiency.
+- **`EmployeeReport.java`** — aggregate employee summary model used by the comparison tables.
+- **`JobNumberData.java`** — job-level reporting engine used to populate the comparison tab’s job-detail tables.
+- **`JobNumberReport.java`** — row model for job-detail reporting tables.
+- **`NextWeekData.java`** — scheduling engine that builds the next-week machine/work-center map from current routing data.
+- **`NextWeekReport.java`** — row model for the Monday–Friday scheduling table.
+- **`CustomTableRow.java`** — custom row styling for visually flagging rows that exceed estimated output.
+- **`PercentageTableCell.java`** — JavaFX table cell formatter used for displaying percentages cleanly in comparison views.
+- **`FakeReportData.java`** — sanitized demo dataset used to preload the application on startup.
+- **`HelloController.java`** — default JavaFX starter controller retained from the initial project scaffold.
 
+### Resource Files
+- **`MainScene.fxml`** — finalized FXML layout defining the tabbed application UI.
+- **`hello-view.fxml`** — starter scaffold FXML retained from the initial JavaFX template.
+- **`logo.png`** — application branding asset used by the UI.
+- **`META-INF/MANIFEST.MF`** — application manifest metadata.
+- **`module-info.java`** — Java module definition declaring JavaFX and JSON dependencies and opening the application package to FXML.
